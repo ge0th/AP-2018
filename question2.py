@@ -137,6 +137,17 @@ def min_max_between_all(vectors):
 
 
 def BSAS(threshold, q, vectors):
+    """
+    An implementation of BSAS algorithm. BSAS calculates the number of clusters in a dataset.
+
+    Args:
+        threshold: This is the list of all vectors.
+        q: maximum number of clusters allowed.
+        vectors: the vectors generated for the given dataset
+
+    Returns:
+        len(Cm): the count of the found clusters
+    """
 
     m = 1
     Cm = [[vectors[0]]] # List of groups
@@ -163,6 +174,19 @@ def BSAS(threshold, q, vectors):
             Cm[min_index].append(vectors[i])
     
     return len(Cm)
+
+
+def get_clusters_count(a, b, c, s, vectors, q):
+
+    groups = []
+    for theta in range(a, b + 1, c):
+        for i in range(0, s):
+            shuffle(vectors)
+            count = BSAS(theta, q, vectors)
+            groups.append(count)
+    #         print("Found {} groups".format(count))
+    # print(groups)
+    return groups
 
 
 def cleaning_data():
@@ -235,19 +259,6 @@ def cleaning_data():
         json.dump(grouped, file)
 
     return grouped
-
-
-def get_clusters_count(a, b, c, s, vectors, q):
-
-    groups = []
-    for theta in range(a, b + 1, c):
-        for i in range(0, s):
-            shuffle(vectors)
-            count = BSAS(theta, q, vectors)
-            groups.append(count)
-    #         print("Found {} groups".format(count))
-    # print(groups)
-    return groups
 
 
 if __name__ == '__main__':
