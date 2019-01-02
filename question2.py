@@ -1,10 +1,14 @@
+# Standard Library Imports
 import os
 import json
 import sys
 import math
+from random import shuffle
+
+# Third Party Imports
 import pandas as pd
 import numpy as np
-from random import shuffle
+
 
 NUMBER_OF_USERS = 943
 GENRES = ['Action', 'Adventure', 'Animation',
@@ -14,16 +18,18 @@ GENRES = ['Action', 'Adventure', 'Animation',
 
 
 def file_exists(file_name):
-
+    """Checks if the specified file exists"""
 
     # return os.path.isfile(os.path.abspath(file_name))
     return False
 
 def euclidian_distance(vector_a, vector_b):
+    """Calculates the euclidian distance between two vectors"""
 
     return math.sqrt(sum([(vector_a - vector_b) ** 2 for vector_a, vector_b in zip(vector_a, vector_b)]))
 
 def binary_search(array, item):
+    """A binary search implementation"""
 
     first = 0
     last = len(array) - 1
@@ -42,8 +48,15 @@ def binary_search(array, item):
 
 
 def vector_to_group(vector, groups):
-    """ vector_to_group finds the group index that a specific vector has been
-        placed
+    """
+    Locates the group(Cm) that the given vector is placed
+
+    Args:
+        vector: The vector to find it's group.
+        groups: The list of the generated groups(Cm).
+
+    Returns:
+       index: The index of the group that the given vector was found.
     """
 
     for index, group in enumerate(groups):
@@ -59,8 +72,16 @@ def vector_to_group(vector, groups):
             return index
 
 def min_distance_vector(vector_index, vectors):
-    """ This function find the minimum distance between a specific vector and all the others
+    """
+    Returns the minimum euclidian distance between the giver vector and the remainings.
 
+    Args:
+        vector_index: This is the vector's index that we want compare.
+        vectors: This is the list of all vectors.
+
+    Returns:
+       vectors[min_index]: the vector with the minimum distance for the given vector_index
+       min_distance: the minimum distance
     """
 
     min_distance = 10000000
@@ -77,6 +98,16 @@ def min_distance_vector(vector_index, vectors):
 
 
 def min_max_between_all(vectors):
+    """
+    Calculates all the possible distances between all the vector combinations
+
+    Args:
+        vectors: This is the list of all vectors.
+
+    Returns:
+       min(distances): the minimum distance
+       max(distances): the maximum distance
+    """
 
     distances = []
 
