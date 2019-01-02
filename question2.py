@@ -77,12 +77,16 @@ def BSAS(threshold, q, vectors):
 
 
         if min_distance > threshold and m < q:
+            # Create a new group
             m = m + 1
             new_group = []
-            new_group.append(vectors[min_distance])
+            # Adds the used vector to the new group
+            new_group.append(vectors[i])
+
+            # Adds the new group to Cm list of groups
             Cm.append(new_group)
         else:
-            Cm[min_index].append(vectors[min_distance])
+            Cm[min_index].append(vectors[i])
 
 def cleaning_data():
     """This method prepares the data for processing by BSAS.
