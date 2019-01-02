@@ -246,15 +246,11 @@ def cleaning_data():
     
     grouped.drop(columns=['movie_id','rating'], inplace=True, axis=1) #leave only user id and agv for every genre
 
-    grouped = grouped.replace(0, np.NaN)
-    grouped = list(grouped.values.tolist())
-
     # Replaces nan with 0
-    for group in grouped:
-        for number in range(len(group)):
-            if math.isnan(group[number]):
-                group[number] = 0
+    grouped.fillna(0, inplace=True)
 
+    grouped = list(grouped.values.tolist())
+          
     with open('data.json', 'w') as file:
         json.dump(grouped, file)
 
