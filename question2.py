@@ -23,10 +23,12 @@ def file_exists(file_name):
     # return os.path.isfile(os.path.abspath(file_name))
     return False
 
+
 def euclidian_distance(vector_a, vector_b):
     """Calculates the euclidian distance between two vectors"""
 
     return math.sqrt(sum([(vector_a - vector_b) ** 2 for vector_a, vector_b in zip(vector_a, vector_b)]))
+
 
 def binary_search(array, item):
     """A binary search implementation"""
@@ -62,14 +64,16 @@ def vector_to_group(vector, groups):
     for index, group in enumerate(groups):
         group_index = binary_search(group, vector)
 
+
+        #If vector is not found in the first group check the next
         if group_index == False:
             continue
-            print("roufa1")
         else:
             print("roufa2")
             print("index")
             print(index)
             return index
+
 
 def min_distance_vector(vector_index, vectors):
     """
@@ -130,9 +134,6 @@ def min_max_between_all(vectors):
 
 
     return min(distances), max(distances)
-
-
-
 
 
 def BSAS(threshold, q, vectors):
@@ -235,6 +236,7 @@ def cleaning_data():
 
     return grouped
 
+
 def get_clusters_count(a, b, c, s, vectors, q):
 
     groups = []
@@ -246,6 +248,7 @@ def get_clusters_count(a, b, c, s, vectors, q):
     #         print("Found {} groups".format(count))
     # print(groups)
     return groups
+
 
 if __name__ == '__main__':
     
@@ -265,4 +268,4 @@ if __name__ == '__main__':
     clusters = get_clusters_count(a, b, 400, 15, vectors, 400)
     print(clusters)
 
-a = input()
+
