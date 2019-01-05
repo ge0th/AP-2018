@@ -71,7 +71,7 @@ def cleaning_data():
     grouped.drop(columns=['movie_id', 'rating'], inplace=True, axis=1) #leave only user id and agv for every genre
 
     grouped.fillna(0, inplace=True)
-    
+
     grouped = list(grouped.values.tolist())
 
     with open('data.json', 'w') as file:
@@ -240,10 +240,12 @@ def get_clusters_count(a, b, c, s, vectors, q):
 
     while theta <= b:
         print("a = {}, b = {}, theta = {}".format(a, b, theta))
+        temp = []
         for i in range(0, s):
             shuffle(vectors)
             count = BSAS(theta, q, vectors)
-            groups.append(count)
+            temp.append(count)
+        groups.append(temp)
         theta = theta + c
     # print("Found {} groups".format(count))
     # print(groups)
@@ -257,6 +259,6 @@ if __name__ == '__main__':
 
     a, b = min_max_between_all(vectors)[0], min_max_between_all(vectors)[1]
 
-    clusters = get_clusters_count(a, b, 5, 20, vectors, 2000)
+    clusters = get_clusters_count(a, b, 1, 10, vectors, 2000)
 
     print(clusters)
