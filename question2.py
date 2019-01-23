@@ -72,11 +72,7 @@ def get_data():
     grouped.drop(columns=['movie_id', 'rating'], inplace=True, axis=1) #leave only user id and agv for every genre
 
     grouped.fillna(0, inplace=True)
-
-    import matplotlib.pyplot as plt 
-    import matplotlib
-
-
+          
     grouped = grouped.as_matrix()
 
     # with open('data.json', 'w') as file:
