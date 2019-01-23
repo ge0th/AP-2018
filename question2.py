@@ -4,6 +4,7 @@ import json
 import sys
 import math
 from random import shuffle
+from collections import Counter
 
 # Third Party Imports
 import pandas as pd
@@ -17,7 +18,7 @@ GENRES = ['Action', 'Adventure', 'Animation',
           'Thriller', 'War', 'Western']
 
 
-def cleaning_data():
+def get_data():
     """This method prepares the data for processing by BSAS.
 
         Especially it drops the unnecessary columns, removes the rows of movies 
@@ -72,10 +73,14 @@ def cleaning_data():
 
     grouped.fillna(0, inplace=True)
 
-    grouped = list(grouped.values.tolist())
+    import matplotlib.pyplot as plt 
+    import matplotlib
 
-    with open('data.json', 'w') as file:
-        json.dump(grouped, file)
+
+    grouped = grouped.as_matrix()
+
+    # with open('data.json', 'w') as file:
+    #     json.dump(grouped, file)
 
     return grouped
 
@@ -220,7 +225,7 @@ def BSAS(threshold, q, vectors):
     return len(Cm)
 
 
-def get_clusters_count(a, b, c, s, vectors, q):
+def clusters_count(a, b, c, s, vectors, q):
     """
     An implementation of BSAS algorithm. BSAS calculates the number of clusters in a dataset.
 
@@ -245,20 +250,29 @@ def get_clusters_count(a, b, c, s, vectors, q):
             shuffle(vectors)
             count = BSAS(theta, q, vectors)
             temp.append(count)
+        temp = Counter(temp).most_common(1)[0][0]
         groups.append(temp)
         theta = theta + c
-    # print("Found {} groups".format(count))
-    # print(groups)
+
     return groups
+
+def get_clusters_count():
+    """Returns the most frequently occurring number of clusters"""
+
+    vectors = get_data()
+
+    a, b = min_max_between_all(vectors)
+
+    clusters = clusters_count(a, b, 1, 5, vectors, 400)
+
+    clusters = Counter(clusters).most_common(1)[0][0]
+
+    return clusters
 
 
 if __name__ == '__main__':
 
 
-    vectors = cleaning_data()
-
-    a, b = min_max_between_all(vectors)[0], min_max_between_all(vectors)[1]
-
-    clusters = get_clusters_count(a, b, 1, 10, vectors, 2000)
+    clusters = get_clusters_count()
 
     print(clusters)
