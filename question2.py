@@ -18,67 +18,6 @@ GENRES = ['Action', 'Adventure', 'Animation',
           'Thriller', 'War', 'Western']
 
 
-def get_data():
-    """This method prepares the data for processing by BSAS.
-
-        Especially it drops the unnecessary columns, removes the rows of movies 
-        with unknown genre and computes the average rating of each user of each
-        movie genre.
-    """
-
-    # Getting absolute path to the data files
-
-    udata = os.path.abspath('dataset/u.data')
-    uitem = os.path.abspath('dataset/u.item')
-
-    # Creating User Ratings Matrix
-
-    data_cols = ['user_id', 'movie_id', 'rating', 'timestamp']
-
-    ratings = pd.read_csv(udata, sep='\t', names=data_cols,
-                          encoding='latin-1')
-
-    ratings.drop(columns='timestamp', inplace=True, axis=1)
-
-    # Creating Movies Matrix
-
-    movie_cols = ['movie_id', 'movie_title', 'release_date', 'video_release date',
-                  'IMDb_URL', 'unknown', 'Action', 'Adventure', 'Animation',
-                  'Childrens', 'Comedy', 'Crime', 'Documentary', 'Drama', 'Fantasy',
-                  'Film-Noir', 'Horror', 'Musical', 'Mystery', 'Romance', 'Sci-Fi',
-                  'Thriller', 'War', 'Western']
-
-    movies = pd.read_csv(uitem, sep='|', names=movie_cols,
-                         encoding='latin-1')
-
-
-    movies = movies[movies.unknown == 0]
-
-    movies.drop(columns=['video_release date', 'release_date',
-                         'IMDb_URL', 'unknown', 'movie_title'], inplace=True, axis=1)
-
-    # Merging Ratings and Movies
-
-    final_matrix = pd.merge(ratings, movies, on='movie_id', how='inner')
-
-    df = final_matrix.replace(0, np.NaN)  # all 0 values transform to NaN
-
-    for genre in GENRES:
-        df.loc[(df[genre] == 1), genre] = df['rating']
-
-
-    grouped = df.groupby('user_id').mean() #group by user id and calculate the avg of non-NaN values
-
-    grouped.drop(columns=['movie_id', 'rating'], inplace=True, axis=1) #leave only user id and agv for every genre
-
-    grouped.fillna(0, inplace=True)
-          
-    grouped = grouped.as_matrix()
-
-    # with open('data.json', 'w') as file:
-    #     json.dump(grouped, file)
-
-    return grouped
 
 
 def file_exists(file_name):
@@ -243,32 +182,28 @@ def clusters_count(a, b, c, s, vectors, q):
         print("a = {}, b = {}, theta = {}".format(a, b, theta))
         temp = []
         for i in range(0, s):
-            shuffle(vectors)
+        
+
+            np.random.shuffle(vectors)
+            
             count = BSAS(theta, q, vectors)
             temp.append(count)
+        print(temp)
         temp = Counter(temp).most_common(1)[0][0]
         groups.append(temp)
         theta = theta + c
 
     return groups
 
-def get_clusters_count():
+def get_clusters_count(vectors, c, s):
     """Returns the most frequently occurring number of clusters"""
-
-    vectors = get_data()
 
     a, b = min_max_between_all(vectors)
 
-    clusters = clusters_count(a, b, 1, 5, vectors, 400)
+    clusters = clusters_count(a, b, c, s, vectors, 1000)
 
     clusters = Counter(clusters).most_common(1)[0][0]
 
     return clusters
 
 
-if __name__ == '__main__':
-
-
-    clusters = get_clusters_count()
-
-    print(clusters)
