@@ -8,8 +8,8 @@ if __name__ == "__main__":
     vectors = get_data()
 
     # Question 2
-    step = 2
-    n_init = 2
+    step = 0.3
+    n_init = 5
     clusters_count = get_clusters_count(vectors, step, n_init)
 
     print("The number of clusters found by the BSAS Algorithm is: {} \n".format(clusters_count))
