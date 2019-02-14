@@ -20,13 +20,6 @@ GENRES = ['Action', 'Adventure', 'Animation',
 
 
 
-def file_exists(file_name):
-    """Checks if the specified file exists"""
-
-    # return os.path.isfile(os.path.abspath(file_name))
-    return False
-
-
 def euclidian_distance(vector_a, vector_b):
     """Calculates the euclidian distance between two vectors"""
 
@@ -200,7 +193,8 @@ def get_clusters_count(vectors, c, s):
 
     a, b = min_max_between_all(vectors)
 
-    clusters = clusters_count(a, b, c, s, vectors, 1000)
+    max_clusters = 1000
+    clusters = clusters_count(a, b, c, s, vectors, max_clusters)
 
     clusters = Counter(clusters).most_common(1)[0][0]
 
